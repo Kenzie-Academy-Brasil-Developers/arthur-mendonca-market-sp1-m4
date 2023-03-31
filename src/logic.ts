@@ -41,7 +41,14 @@ const createProduct = (request: Request, response: Response): Response => {
 };
 
 const getAllProducts = (request: Request, response: Response): Response => {
-  return response.status(201).json(marketProducts);
+  const totalSum = marketProducts.reduce(
+    (previousValue, currentValue) => previousValue + currentValue.price,
+    0
+  );
+  return response.status(200).send({
+    total: totalSum,
+    marketProducts: marketProducts,
+  });
 };
 
 const getProductById = (
@@ -76,6 +83,8 @@ const updateProduct = (
     ...marketProducts[findIndex],
     ...updatedProduct,
   };
+
+  return response.status(200).json(marketProducts[findIndex]);
 };
 
 export {
